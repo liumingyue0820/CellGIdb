@@ -1,23 +1,3 @@
-#####   [[[[    下面代码无需上传GitHub
-load('no-3.GSE149655.Malignant epithelial.SLSV.propR.RData')
-dim(SL.propR03) # [1] 12762    23 (&&&&&)
-SL.propR03$celltype=celltype
-SL.propR03$dataset=dataset
-SL.propR03$cancer='Lung'
-
-dim(SV.propR03) # [1] 1588   23  (&&&&&)
-SV.propR03$celltype=celltype
-SV.propR03$dataset=dataset
-SV.propR03$cancer='Lung'
-type='SL'
-SL.propR03.NodeWeight=Node.Weight(SL.propR03)
-type='SV'
-SV.propR03.NodeWeight=Node.Weight(SV.propR03)
-
-
-####   ]]]]
-
-
 
 
 ####    ---> Tool:  Hallmarker Tools <---  ####
@@ -312,6 +292,7 @@ immunotherapy.result = Fisher.Immunotherapy.SLSV(express.act.inact, network.sl, 
 # Expected output:
 # [1] "4 immunotherapy response-related SL gene pairs!"
 # [1] "2 immunotherapy response-related SV gene pairs!"
+
 
 
 
