@@ -5,9 +5,6 @@
 ##  Output: SL pairs associated with favorable patient survival and SV pairs associated with poor survival
 # If the co-expression correlation coefficient > 0, G1 and G2 are activated simultaneously (1)
 # If the co-expression correlation coefficient < 0, one of G1 and G2 is activated (1) while the other is deactivated (-1)
-network.sl=SL.propR03[pmatch(lung.sl.edge$sl.pair,SL.propR03$symbol1.symbol2),]
-network.sv=SV.propR03[pmatch(lung.sv.edge$sv.pair,SV.propR03$symbol1.symbol2),]
-network=network.sl
 
 library(survival)
 library(survminer)
@@ -135,7 +132,7 @@ tcga.slsv.survival=function(network.sl, network.sv, tcga.expre, sur.dat){
   for(m in 1:nrow(coact.list)){   
     genepair_act.inact=expre_act.inact[pmatch(coact.list[m,5:6], rownames(expre_act.inact)),]#
     s1=apply(genepair_act.inact,2,sum)
-    coact.alter[m,which(s1==2)]=1  # ****  同时激活基因对(加和=2)改变状态是1   ****
+    coact.alter[m,which(s1==2)]=1  
   }
   
   #  ******   The correlation coefficient between genes and co-expression is less than 0, with one being activated (1) and the other inactivated (-1).    *******
@@ -146,11 +143,11 @@ tcga.slsv.survival=function(network.sl, network.sv, tcga.expre, sur.dat){
   colnames(act.inact.alter)=colnames(expre_act.inact) 
   for(m in 1:nrow(act.inact.list)){   
     genepair_act.inact=expre_act.inact[pmatch(act.inact.list[m,5:6], rownames(expre_act.inact)),]#
-    if(act.inact.list[m,17]==TRUE){  # gene1上调,gene2下调
+    if(act.inact.list[m,17]==TRUE){
       index1=intersect(which(genepair_act.inact[1,]==1),which(genepair_act.inact[2,]==(-1)))
       act.inact.alter[m,index1]=1  # **** The altered state of cells that simultaneously meet the conditions of gene1 up-regulation and gene2 down-regulation is 1    ****
     }
-    if(act.inact.list[m,18]==TRUE){  # gene1下调,gene2上调
+    if(act.inact.list[m,18]==TRUE){ 
       index1=intersect(which(genepair_act.inact[1,]==(-1)),which(genepair_act.inact[2,]==1))
       act.inact.alter[m,index1]=1  # **** The altered state of cells that simultaneously meet the conditions of gene1 up-regulation and gene2 down-regulation is 1    ****
     }
@@ -190,7 +187,7 @@ tcga.slsv.survival=function(network.sl, network.sv, tcga.expre, sur.dat){
   log.rank.result$time_1.new=log.rank.result$time_1
   log.rank.result[ind,5]=as.numeric(log.rank.result[ind,3])+1
   log.rank.result=log.rank.result[which(as.numeric(log.rank.result$time_1)<as.numeric(log.rank.result$time_0)),1:4]
-  print(paste(c('SV genes related to good prognosis:',dim(log.rank.result)[1],'个！！！'),collapse =''))
+  print(paste(c('SV genes related to good prognosis:',dim(log.rank.result)[1],'！！！'),collapse =''))
   if(dim(log.rank.result)[1]>0){
     survival.sv.df=df[,c(1:4,pmatch(log.rank.result$gene_pair, colnames(df)))]
     colnames(survival.sv.df)[5:ncol(survival.sv.df)]=gsub('/',':',colnames(survival.sv.df)[5:ncol(survival.sv.df)])
@@ -640,3 +637,4 @@ Fisher.Immunotherapy.SLSV = function(express.act.inact, network.sl, network.sv){
   immunotherapy.result = list(result005.SL, result005.SV)
   return(immunotherapy.result)
 }
+
