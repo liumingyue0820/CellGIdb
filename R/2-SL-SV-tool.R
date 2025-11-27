@@ -68,7 +68,7 @@ for(j in (index+1):ncol(sec.Malig@meta.data)){
 
 
 # --->  Correlation between SV score and 50 hallmarker scores
-a=sec.Malig@meta.data$SV.Node # SV点打分呢
+a=sec.Malig@meta.data$SV.Node # 
 for(j in index:ncol(sec.Malig@meta.data)){
   b=sec.Malig@meta.data[,j]
   ind=intersect(which(a!=0), which(b!=0))
@@ -90,7 +90,6 @@ for(j in index:ncol(sec.Malig@meta.data)){
 spearman.result[which(spearman.result$p.value==0),3]=2.2e-16
 spearman.result[which(spearman.result$p.value<2.2e-16),3]=2.2e-16
 spearman.result$log10P=-log10(spearman.result$p.value)
-# 整理hallmarker名字
 hm=paste(tolower(unlist(strsplit(spearman.result[1,2],'_')))[-1],collapse  = '_')
 hm=gsub('1','',hm)
 hm=gsub('_',' ',hm)
@@ -292,6 +291,7 @@ immunotherapy.result = Fisher.Immunotherapy.SLSV(express.act.inact, network.sl, 
 # Expected output:
 # [1] "4 immunotherapy response-related SL gene pairs!"
 # [1] "2 immunotherapy response-related SV gene pairs!"
+
 
 
 
