@@ -6,13 +6,9 @@ library(Seurat)
 
 ######    Step1: Identify genes differentially overexpressed in malignant epithelial cells    #######
 
-setwd('F:\\cell type specific gi\\202502-202505\\CellGIdb-GitHub\\data')
+setwd(path)
 sec=readRDS('GSE149655_Seurat.rds')
-# table(sec@active.ident)
-# Malignant epithelial Epithelial cell      T cell               Mast cell           Macrophage 
-# 918                  123                  678                  261                  465 
-# Endothelial cell     Fibroblast           Plasma cell          B cell 
-# 278                  369                  164                   42 
+
 celltype='Malignant epithelial'
 diff_gene <- FindMarkers(sec, min.pct = 0.01, 
                          logfc.threshold = 0.25,
@@ -55,7 +51,7 @@ library(ppcor)
 library(propr)
 method='propR'
 
-#  2、生成特定细胞类型的Seurat对象
+#  2、Seurat objects of specific cell types
 sec.Malig=subset(x = sec, idents = 'Malignant epithelial')
 slGene=intersect(unique(c(SL.upgene$symbol1,SL.upgene$symbol2)),rownames(sec.Malig@assays$RNA$counts)) 
 svGene=intersect(unique(c(SV.upgene$symbol1,SV.upgene$symbol2)),rownames(sec.Malig@assays$RNA$counts)) 
@@ -167,5 +163,6 @@ type='SL'
 SL.propR.Node.Weight=Node.Weight(SL.propR03)
 type='SV'
 SV.propR.Node.Weight=Node.Weight(SV.propR03)
+
 
 
