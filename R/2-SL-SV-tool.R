@@ -1,15 +1,16 @@
 
 
+
 ####    ---> Tool:  Hallmarker Tools <---  ####
 
 # The AddModuleScore function scores the SL and SV network node gene sets
 # SL
-sl.node.list=SL.propR03.NodeWeight$node
+sl.node.list=SL.propR.Node.Weight$node
 sl.node.list <- sl.node.list[sl.node.list %in% rownames(sec.Malig)]
 sl.node.list <- list(as.data.frame(sl.node.list))
 sec.Malig <- AddModuleScore(object = sec.Malig, features = sl.node.list, name = 'SL.Node')
 # SV
-sv.node.list=SV.propR03.NodeWeight$node
+sv.node.list=SV.propR.Node.Weight$node
 sv.node.list <- sv.node.list[sv.node.list %in% rownames(sec.Malig)]
 sv.node.list <- list(as.data.frame(sv.node.list))
 sec.Malig <- AddModuleScore(object = sec.Malig, features = sv.node.list, name = 'SV.Node')
@@ -68,7 +69,7 @@ for(j in (index+1):ncol(sec.Malig@meta.data)){
 
 
 # --->  Correlation between SV score and 50 hallmarker scores
-a=sec.Malig@meta.data$SV.Node # 
+a=sec.Malig@meta.data$SV.Node # SV点打分呢
 for(j in index:ncol(sec.Malig@meta.data)){
   b=sec.Malig@meta.data[,j]
   ind=intersect(which(a!=0), which(b!=0))
@@ -90,6 +91,7 @@ for(j in index:ncol(sec.Malig@meta.data)){
 spearman.result[which(spearman.result$p.value==0),3]=2.2e-16
 spearman.result[which(spearman.result$p.value<2.2e-16),3]=2.2e-16
 spearman.result$log10P=-log10(spearman.result$p.value)
+# 整理hallmarker名字
 hm=paste(tolower(unlist(strsplit(spearman.result[1,2],'_')))[-1],collapse  = '_')
 hm=gsub('1','',hm)
 hm=gsub('_',' ',hm)
@@ -135,9 +137,9 @@ dim(expre.tcga.luad.slsv)  # [1] 5253 497
 library(survival)
 library(survminer) 
 #  ---  SL  ---
-dim(network.sl)  # [1] 123  23  
+dim(network.sl)  # 
 #  ---  SV  ---
-dim(network.sv)  # [1] 42 23  
+dim(network.sv)  # 
 #  *****  The function "tcga.slsv.survival" identifies SLSV gene pairs associated with prognosis.    *****
 result.survival=tcga.slsv.survival(network.sl, network.sv, expre.tcga.luad.slsv, survival497)
 # SL genes related to poor prognosis
@@ -239,8 +241,8 @@ FeaturePlot(object = sec.Malig, features = "GDSC1_CGP-60474")
 
 
 ####  --->   Tool: Immunotherapy Tools      <-----  ##### 
-dim(network.sl)  # [1] 12762    22  (&&&&&)
-dim(network.sv)  # [1] 1588   23    (&&&&&)
+dim(network.sl)  # 
+dim(network.sv)  # 
 
 ###   dataset1: Ravi2023  ---->
 load('Immuno.Ravi2023.NSCLC.Expre.Response.RData')
@@ -289,10 +291,8 @@ dim(network.sv)
 #  ---->  Call Fisher.Immunotherapy.SLSV function to identify immunotherapy response-related SL/SV pairs
 immunotherapy.result = Fisher.Immunotherapy.SLSV(express.act.inact, network.sl, network.sv)
 # Expected output:
-# [1] "4 immunotherapy response-related SL gene pairs!"
-# [1] "2 immunotherapy response-related SV gene pairs!"
-
-
+# [1] "? immunotherapy response-related SL gene pairs!"
+# [1] "? immunotherapy response-related SV gene pairs!"
 
 
 
