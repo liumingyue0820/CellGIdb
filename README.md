@@ -33,4 +33,4 @@ We present a case study using malignant epithelial cells from the lung cancer da
 
 - Mingyue Liu  
 - Yu Tian  
-- Nan Zhang
+- Yuchao Jia
